@@ -9,43 +9,63 @@ import Foundation
 
 
 class Menu {
-    var menu_name : String
-    var menu_cost : Int
-    var menu_info : String
+    var menu_Name : String
+    var menu_Cost : Int
+    var menu_Info : String
     
-    init(menu_name: String, menu_cost: Int, menu_info: String) {
-        self.menu_name = menu_name
-        self.menu_cost = menu_cost
-        self.menu_info = menu_info
+    init(menu_Name: String, menu_Cost: Int, menu_Info: String) {
+        self.menu_Name = menu_Name
+        self.menu_Cost = menu_Cost
+        self.menu_Info = menu_Info
     }
 }
 
-var menu_board = [
-    "001" : Menu(menu_name: "타워버거", menu_cost: 6_300, menu_info: "두툼한 통가슴살 필렛과 해시브라운, 슬라이스 치즈까지 KFC 시그니처 버거") ,
-    "002" : Menu(menu_name: "징거버거", menu_cost: 5_500, menu_info: "더 커진 닭가슴살필렛과 상큼한 토마토가 어우러진 대표 치킨버거") ,
-    "003" : Menu(menu_name: "캡새버거", menu_cost: 4_300, menu_info: "탱글탱글한 새우살이 콕콕 그 새우버거가 KFC에서 더 맛있게 나왔새우"),
-    "004" : Menu(menu_name: "핫크리스피치킨", menu_cost: 3_000, menu_info: "KFC만의 비법으로 매콤 바삭하게 튀겨낸 KFC 핫크리스피치킨"),
-    "005" : Menu(menu_name: "갓양념치킨", menu_cost: 3_300, menu_info: "달콤 매콤, 먹을수록 땡기는 맵달의 조화 한국인 입맛에 딱 맞춘 환상의 양념치킨"),
-    "006" : Menu(menu_name: "뉴갓쏘이치킨", menu_cost: 3_300, menu_info: "육즙 가득 바삭한 치킨과 KFC 비법 간장소스가 만났다!"),
-    "007" : Menu(menu_name: "케이준후라이", menu_cost: 2_800, menu_info: "케이준 양념으로 더욱 고소하고 바삭해진 KFC 케이준후라이"),
-    "008" : Menu(menu_name: "코울슬로", menu_cost: 2_000, menu_info: "양배추와 당근, 각종 신선한 야채를 상큼하게 버무린 샐러드"),
-    "009" : Menu(menu_name: "코카콜라", menu_cost: 2_000, menu_info: "속까지 시원해지는 청량음료의 대표! 콜라"),
-    "010" : Menu(menu_name: "스프라이트", menu_cost: 2_000, menu_info: "속까지 시원해지는 청량음료 스프라이트!")
+
+
+var menu_Burger = [
+
+    "01" : Menu(menu_Name: "타워버거", menu_Cost: 6_300, menu_Info: "두툼한 통가슴살 필렛과 해시브라운, 슬라이스 치즈까지 KFC 시그니처 버거") ,
+    "02" : Menu(menu_Name: "징거버거", menu_Cost: 5_500, menu_Info: "더 커진 닭가슴살필렛과 상큼한 토마토가 어우러진 대표 치킨버거") ,
+    "03" : Menu(menu_Name: "캡새버거", menu_Cost: 4_300, menu_Info: "탱글탱글한 새우살이 콕콕 그 새우버거가 KFC에서 더 맛있게 나왔새우")
+
 ]
 
 
+var menu_Chicken = [
+
+    "04" : Menu(menu_Name: "핫크리스피치킨", menu_Cost: 3_000, menu_Info: "KFC만의 비법으로 매콤 바삭하게 튀겨낸 KFC 핫크리스피치킨"),
+    "05" : Menu(menu_Name: "갓양념치킨", menu_Cost: 3_300, menu_Info: "달콤 매콤, 먹을수록 땡기는 맵달의 조화 한국인 입맛에 딱 맞춘 환상의 양념치킨"),
+    "06" : Menu(menu_Name: "뉴갓쏘이치킨", menu_Cost: 3_300, menu_Info: "육즙 가득 바삭한 치킨과 KFC 비법 간장소스가 만났다!")
+
+]
+
+
+var menu_Side = [
+
+    "07" : Menu(menu_Name: "케이준후라이", menu_Cost: 2_800, menu_Info: "케이준 양념으로 더욱 고소하고 바삭해진 KFC 케이준후라이"),
+    "08" : Menu(menu_Name: "코울슬로", menu_Cost: 2_000, menu_Info: "양배추와 당근, 각종 신선한 야채를 상큼하게 버무린 샐러드")
+
+]
+
+var menu_Beverage = [
+
+    "009" : Menu(menu_Name: "코카콜라", menu_Cost: 2_000, menu_Info: "속까지 시원해지는 청량음료의 대표! 콜라"),
+    "010" : Menu(menu_Name: "스프라이트", menu_Cost: 2_000, menu_Info: "속까지 시원해지는 청량음료 스프라이트!")
+
+]
+
 
 class MenuPrint {
-    func printMenuBoard(menu_board: [String: Menu]) {
+    func printMenuBoard(category: String, menu_Board: [String: Menu]) {
         print("-------------------")
-        print("\n메뉴판\n")
-        let menuBoardKeys = menu_board.keys.sorted()
+        print("\n\(category) 메뉴판\n")
+        let menuBoardKeys = menu_Board.keys.sorted()
         for key in menuBoardKeys {
-            if let value = menu_board[key] {
+            if let value = menu_Board[key] {
                 print("제품번호: \(key)")
-                print("상품명: \(value.menu_name)")
-                print("가격: \(value.menu_cost)")
-                print("상품정보: \(value.menu_info)\n")
+                print("상품명: \(value.menu_Name)")
+                print("가격: \(value.menu_Cost)")
+                print("상품정보: \(value.menu_Info)\n")
             }
         }
         print("-------------------")
@@ -53,12 +73,57 @@ class MenuPrint {
 }
 
 
-/* 실행 하시려면 이렇게 실행하시면 됩니다!
+
+
+
+ 
+//카테고리 버거 선택 시 ↓
+ 
+/*
  
  let menuPrint = MenuPrint()
- menuPrint.printMenuBoard(menu_board: menu_board)
+menuPrint.printMenuBoard(category: "버거", menu_Board: menu_Burger)
  
  */
+ 
+
+//카테고리 치킨 선택 시 ↓
+ 
+/*
+ 
+ let menuPrint = MenuPrint()
+menuPrint.printMenuBoard(category: "치킨", menu_Board: menu_Chicken)
+ 
+ */
+ 
+
+//카테고리 사이드 선택 시 ↓
+ 
+/*
+ 
+ let menuPrint = MenuPrint()
+menuPrint.printMenuBoard(category: "사이드", menu_Board: menu_Side)
+ 
+ */
+
+//카테고리 음료 선택 시 ↓
+ 
+/*
+ 
+ let menuPrint = MenuPrint()
+menuPrint.printMenuBoard(category: "음료", menu_Board: menu_Beverage)
+ 
+ */
+
+
+
+
+
+
+
+
+
+
 
 
 
