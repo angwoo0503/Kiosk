@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		312F67B62A6E6E5B0009113D /* payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312F67B52A6E6E5B0009113D /* payment.swift */; };
 		319CF2BC2A6E341500C1E4B1 /* menuBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319CF2BB2A6E341500C1E4B1 /* menuBoard.swift */; };
 		6AAAFF6F2A6E8D1F00DA67D6 /* receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAAFF6E2A6E8D1F00DA67D6 /* receipt.swift */; };
 		DF49505D2A6E0B7300F39382 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF49505C2A6E0B7300F39382 /* main.swift */; };
+		DF4B9C922A6EB27800DC5E08 /* payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4B9C912A6EB27800DC5E08 /* payment.swift */; };
 		DFEB4F1B2A6E532B0048C44A /* orderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEB4F1A2A6E532B0048C44A /* orderManager.swift */; };
 		DFEB4F302A6E87820048C44A /* orderStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEB4F2F2A6E87820048C44A /* orderStatus.swift */; };
 		DFEB4F322A6E87A80048C44A /* menuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEB4F312A6E87A80048C44A /* menuManager.swift */; };
@@ -30,11 +30,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		312F67B52A6E6E5B0009113D /* payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = payment.swift; sourceTree = "<group>"; };
 		319CF2BB2A6E341500C1E4B1 /* menuBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = menuBoard.swift; sourceTree = "<group>"; };
 		6AAAFF6E2A6E8D1F00DA67D6 /* receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = receipt.swift; sourceTree = "<group>"; };
-		DF4950592A6E0B7300F39382 /* Kiosk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Kiosk; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF4950592A6E0B7300F39382 /* Kiosk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Kiosk; path = "/Users/t2023-m0061/SubMac/Kiosk2/build/Debug/Kiosk"; sourceTree = "<absolute>"; };
 		DF49505C2A6E0B7300F39382 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DF4B9C912A6EB27800DC5E08 /* payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = payment.swift; sourceTree = "<group>"; };
 		DFEB4F1A2A6E532B0048C44A /* orderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = orderManager.swift; sourceTree = "<group>"; };
 		DFEB4F2F2A6E87820048C44A /* orderStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = orderStatus.swift; sourceTree = "<group>"; };
 		DFEB4F312A6E87A80048C44A /* menuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = menuManager.swift; sourceTree = "<group>"; };
@@ -56,16 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				DF49505B2A6E0B7300F39382 /* Kiosk */,
-				DF49505A2A6E0B7300F39382 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		DF49505A2A6E0B7300F39382 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DF4950592A6E0B7300F39382 /* Kiosk */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		DF49505B2A6E0B7300F39382 /* Kiosk */ = {
@@ -78,6 +69,7 @@
 				DFEB4F2F2A6E87820048C44A /* orderStatus.swift */,
 				DF49505C2A6E0B7300F39382 /* main.swift */,
 				6AAAFF6E2A6E8D1F00DA67D6 /* receipt.swift */,
+				DF4B9C912A6EB27800DC5E08 /* payment.swift */,
 			);
 			path = Kiosk;
 			sourceTree = "<group>";
@@ -126,7 +118,7 @@
 				Base,
 			);
 			mainGroup = DF4950502A6E0B7300F39382;
-			productRefGroup = DF49505A2A6E0B7300F39382 /* Products */;
+			productRefGroup = DF4950502A6E0B7300F39382;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -146,8 +138,8 @@
 				319CF2BC2A6E341500C1E4B1 /* menuBoard.swift in Sources */,
 				DFEB4F342A6E87CA0048C44A /* readIntFromConsole.swift in Sources */,
 				DFEB4F1B2A6E532B0048C44A /* orderManager.swift in Sources */,
+				DF4B9C922A6EB27800DC5E08 /* payment.swift in Sources */,
 				DF49505D2A6E0B7300F39382 /* main.swift in Sources */,
-				312F67B62A6E6E5B0009113D /* payment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
