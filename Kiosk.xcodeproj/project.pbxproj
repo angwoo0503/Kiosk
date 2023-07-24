@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		312F67B62A6E6E5B0009113D /* payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312F67B52A6E6E5B0009113D /* payment.swift */; };
 		319CF2BC2A6E341500C1E4B1 /* menuBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319CF2BB2A6E341500C1E4B1 /* menuBoard.swift */; };
 		DF49505D2A6E0B7300F39382 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF49505C2A6E0B7300F39382 /* main.swift */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		312F67B52A6E6E5B0009113D /* payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = payment.swift; sourceTree = "<group>"; };
 		319CF2BB2A6E341500C1E4B1 /* menuBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = menuBoard.swift; sourceTree = "<group>"; };
 		DF4950592A6E0B7300F39382 /* Kiosk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Kiosk; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF49505C2A6E0B7300F39382 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			children = (
 				319CF2BB2A6E341500C1E4B1 /* menuBoard.swift */,
 				DF49505C2A6E0B7300F39382 /* main.swift */,
+				312F67B52A6E6E5B0009113D /* payment.swift */,
 			);
 			path = Kiosk;
 			sourceTree = "<group>";
@@ -125,6 +128,7 @@
 			files = (
 				319CF2BC2A6E341500C1E4B1 /* menuBoard.swift in Sources */,
 				DF49505D2A6E0B7300F39382 /* main.swift in Sources */,
+				312F67B62A6E6E5B0009113D /* payment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
