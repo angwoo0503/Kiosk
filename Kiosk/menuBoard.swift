@@ -49,8 +49,8 @@ var menu_Side = [
 
 var menu_Beverage = [
 
-    "009" : Menu(menu_Name: "코카콜라", menu_Cost: 2_000, menu_Info: "속까지 시원해지는 청량음료의 대표! 콜라"),
-    "010" : Menu(menu_Name: "스프라이트", menu_Cost: 2_000, menu_Info: "속까지 시원해지는 청량음료 스프라이트!")
+    "09" : Menu(menu_Name: "코카콜라", menu_Cost: 2_000, menu_Info: "속까지 시원해지는 청량음료의 대표! 콜라"),
+    "10" : Menu(menu_Name: "스프라이트", menu_Cost: 2_000, menu_Info: "속까지 시원해지는 청량음료 스프라이트!")
 
 ]
 
