@@ -17,6 +17,7 @@ class OrderManager : ReadIntFromConsole {
     // 1. 메뉴 카테고리 선택
     // 2. 종료
     func mainPage() {
+        print("1. 버거 2. 치킨 3. 사이드 4. 음료 0. 종료")
         if orderStatus == .empty {
             // 장바구니가 비어있는 경우
             if let choice = readIntFromConsole() {
@@ -24,14 +25,13 @@ class OrderManager : ReadIntFromConsole {
                 case 1...Categories.allCases.count:
                     // 선택한 카테고리 상세 메뉴 페이지로 이동
                     detailMenuPage(categoryIndex: choice)
-                    
-                case 0: fatalError("프로그램을 종료합니다.") // 프로그램 종료
+                case 0: print("프로그램을 종료합니다.")
+                    exit(0) // 프로그램 종료
                 default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.")
-                    mainPage()//
                 }
             }
         } else {
-            // 장바구니에 상품이 있는 경우
+            // 장바구니에 상품이 있는 경우 (주문이 진행중인 경우)
             if let choice = readIntFromConsole() {
                 switch choice {
                 case 1...Categories.allCases.count:
@@ -41,7 +41,8 @@ class OrderManager : ReadIntFromConsole {
                     orderPage() // 장바구니를 확인 후 주문
                 case Categories.allCases.count+2:
                     cancelOrder() // 진행중인 주문을 취소
-                case 0: fatalError("프로그램을 종료합니다.") // 프로그램 종료
+                case 0: print("프로그램을 종료합니다.")
+                    exit(0) // 프로그램 종료
                 default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.")
                     mainPage()
                 }
@@ -54,19 +55,18 @@ class OrderManager : ReadIntFromConsole {
     // 2. 뒤로 가기
     func detailMenuPage(categoryIndex: Int) {
         // categoryIndex에 해당하는 카테고리 메뉴들 출력
-        let category = Categories.allCases[categoryIndex]
+        let category = Categories.allCases[categoryIndex - 1]
         print("\(category) 메뉴 목록:")
-        guard let menus = menus[category] else {
+        guard let menus = menus[category] else { // 열거형의 원시값을 이용해 메뉴 변수 할당
             fatalError("상세 메뉴를 불러오는 과정에서 오류가 났습니다.")
         }
-        let menuPrint = MenuPrint()
+        let menuPrint = MenuPrint(costStyle: costStyle)
         menuPrint.printMenuBoard(category: category.rawValue, menu_Board: menus)
         print("0. 뒤로 가기")
-        
         if let choice = readIntFromConsole() {
             switch choice {
             case 1...menus.count: // 메뉴 선택
-                // 선택한 메뉴로 장바구니 추가 등 필요한 로직 수행
+                // 선택한 메뉴로 장바구니 추가 등 필요한 로직 수행 코드 작성 필요!!!!
                 print("\(category) 메뉴 \(choice)를 선택했습니다.")
                 mainPage()
             case 0: mainPage() // 메인 페이지로 이동 (뒤로 가기)
@@ -158,3 +158,4 @@ class OrderManager : ReadIntFromConsole {
     //    }
     //
 }
+
