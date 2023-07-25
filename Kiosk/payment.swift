@@ -18,12 +18,12 @@ let bankCheckEndTime : String = "23:20:00"
 //결제 시
 // 현재 시간이 "23:10:00" ~ "23:20:00" 사이면 "지금은 은행 점검 시간입니다."를 반환하는 함수입니다.
 
-func bankCheck() -> String {
+func bankCheck() -> Bool {
      if bankCheckStartTime <= nowTime &&
             nowTime <= bankCheckEndTime {
-        return "지금은 은행 점검 시간입니다."
+        return true
     } else {
-        return "정상결제"
+        return false
     }
 }
 

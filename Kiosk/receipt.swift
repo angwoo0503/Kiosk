@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Calculate {
+class Receipt {
     var shoppingBasket: [Menu] = []
     // Menu객체 담는 저장소 '장바구니'
     
