@@ -59,7 +59,7 @@ class OrderManager : ReadIntFromConsole {
         guard let menus = menus[category] else {
             fatalError("상세 메뉴를 불러오는 과정에서 오류가 났습니다.")
         }
-        let menuPrint = MenuPrint()
+        let menuPrint = MenuPrint(costStyle: <#NumberFormatter#>)
         menuPrint.printMenuBoard(category: category.rawValue, menu_Board: menus)
         print("0. 뒤로 가기")
         
