@@ -66,7 +66,7 @@ class MenuPrint {
     
     
     func printMenuBoard(category: String, menu_Board: [Int : Menu]) {
-        print("-------------------")
+        print("------------------------------------------")
         print("\n\(category) 메뉴판\n")
         let menuBoardKeys = menu_Board.keys.sorted()
         for key in menuBoardKeys {
@@ -79,7 +79,6 @@ class MenuPrint {
             }
         }
         print("")
-        print("-------------------")
     }
 }
 

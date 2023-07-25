@@ -19,9 +19,9 @@ class OrderManager : ReadIntFromConsole {
     // 1. 메뉴 카테고리 선택
     // 2. 종료
     func mainPage() {
-        print("1. 버거 2. 치킨 3. 사이드 4. 음료 0. 종료")
         if orderStatus == .empty {
             // 장바구니가 비어있는 경우
+            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n0. 종료")
             if let choice = readIntFromConsole() {
                 switch choice {
                 case 1...Categories.allCases.count:
@@ -33,6 +33,7 @@ class OrderManager : ReadIntFromConsole {
                 }
             }
         } else {
+            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 주문 취소\n0. 종료")
             // 장바구니에 상품이 있는 경우 (주문이 진행중인 경우)
             if let choice = readIntFromConsole() {
                 switch choice {
@@ -64,6 +65,7 @@ class OrderManager : ReadIntFromConsole {
         let menuPrint = MenuPrint()
         menuPrint.printMenuBoard(category: category.rawValue, menu_Board: menus)
         print("0. 뒤로 가기")
+        print("------------------------------------------")
         if let choice = readIntFromConsole() {
             switch choice {
             case 1...menus.count: // 메뉴 선택
@@ -71,10 +73,11 @@ class OrderManager : ReadIntFromConsole {
                 guard let menuName = menus[choice]?.menu_Name else { return }
                 guard let menuCost = menus[choice]?.menu_Cost else { return }
                 guard let menuInfo = menus[choice]?.menu_Info else { return }
+                print("------------------------------------------\n")
                 print("\(menuName) | \(menuCost) | \(menuInfo)")
                 orderCheckPage(menuName: menuName, menuCost: menuCost)
             case 0: mainPage() // 메인 페이지로 이동 (뒤로 가기)
-            default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.")
+            default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.\n")
             }
         }
     }
@@ -84,21 +87,25 @@ class OrderManager : ReadIntFromConsole {
     // 1. 확인
     // 2. 취소
     func orderCheckPage(menuName : String, menuCost : Int) {
-        print("위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\n2. 취소")
+        print()
+        print("위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\n2. 취소\n")
+        print("------------------------------------------")
         if let choice = readIntFromConsole() {
             switch choice {
             case 1: // 1. 확인 장바구니 클래스, .inProgress 들어가야 함
-                    cart.addItemToCart(menuName: menuName, quantity: 1, menuCost: menuCost)
+                    cart.addItemToCart(menuName: menuName, quantity: 1, menuCost: menuCost, orderStatus: orderStatus)
+                orderStatus = cart.orderStatus // 현재 cart의 orderStatus를 할당 (.inProgress)
                 cart.printcartItems()
                 mainPage()
             case 2: mainPage() // 2. 취소
-            default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.")
+            default: print("잘못된 번호를 입력했어요. 다시 입력해주세요. \n")
+                print("------------------------------------------")
             }
         }
     }
     
     
-    // 장바구니 확인 및 주문 페이지
+    // 주문 페이지
     // 1. 주문
     // 2. 메뉴판
     func orderPage() {

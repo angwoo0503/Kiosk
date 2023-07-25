@@ -2,12 +2,15 @@
 class Cart {
     var menuName : String
     var cartItems : [String : (quantity : Int,  menuCost : Int)] = [:]
+    var orderStatus : OrderStatus
     
     init(menuName: String, quantity: Int, menuCost: Int) {
         self.menuName = menuName
+        self.orderStatus = .empty
     }
     
-    func addItemToCart(menuName: String, quantity: Int, menuCost: Int) {
+    func addItemToCart(menuName: String, quantity: Int, menuCost: Int, orderStatus: OrderStatus) {
+        self.orderStatus = .inProgress
         if let existingItem = cartItems[menuName] {
             // 이미 물건이 있는 경우, 수량과 가격을 업데이트
             let updatedQuantity = existingItem.quantity + quantity
@@ -19,13 +22,13 @@ class Cart {
         }
     }
     
-    func printcartItems () {
-        print("---------------------------------")
+    func printCartItems () {
+        print("------------------------------------------\n")
         for (menuName, (quantity, menuCost)) in cartItems {
-            print("\(menuName) - 수량 : \(quantity) 가격 : \(menuCost)")
+            print("\(menuName) - 수량 : \(quantity) 가격 : \(menuCost * quantity)\n")
         }
-        print("---------------------------------")
-        print("총 가격 : \(calculateTotalCost())")
+        print("총 가격 : \(calculateTotalCost())\n")
+        print("------------------------------------------")
     }
     
     func calculateTotalCost() -> Int {
