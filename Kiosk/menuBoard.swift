@@ -61,12 +61,7 @@ var menus: [Categories: [Int : Menu]] = [.burger: menu_Burger, .chicken: menu_Ch
 
 
 class MenuPrint {
-    let costStyle : NumberFormatter
-    
-    init(costStyle : NumberFormatter) {
-        self.costStyle = costStyle
-    }
-    
+
     
     
     
@@ -76,6 +71,9 @@ class MenuPrint {
         let menuBoardKeys = menu_Board.keys.sorted()
         for key in menuBoardKeys {
             if let value = menu_Board[key] {
+                // 가격 천단위 , 적용
+                let costStyle = NumberFormatter()
+                costStyle.numberStyle = .decimal
                 let kfcCost = costStyle.string(from: NSNumber(value:  value.menu_Cost)) ?? ""
                 print("\(key) | \(value.menu_Name) | W: \(kfcCost) | \(value.menu_Info)\n")
             }

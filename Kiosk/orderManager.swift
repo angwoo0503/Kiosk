@@ -60,7 +60,7 @@ class OrderManager : ReadIntFromConsole {
         guard let menus = menus[category] else { // 열거형의 원시값을 이용해 메뉴 변수 할당
             fatalError("상세 메뉴를 불러오는 과정에서 오류가 났습니다.")
         }
-        let menuPrint = MenuPrint(costStyle: costStyle)
+        let menuPrint = MenuPrint()
         menuPrint.printMenuBoard(category: category.rawValue, menu_Board: menus)
         print("0. 뒤로 가기")
         if let choice = readIntFromConsole() {

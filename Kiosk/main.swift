@@ -26,9 +26,8 @@ var orderManager = OrderManager(myMoney: 10000)
 orderManager.mainPage()
 
     
-// 가격 천단위 , 적용
-let costStyle = NumberFormatter()
-costStyle.numberStyle = .decimal
+
+
 
 
 
