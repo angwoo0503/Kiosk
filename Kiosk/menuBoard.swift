@@ -5,6 +5,8 @@
 //  Created by 서영덕 on 2023/07/24.
 //
 
+import Foundation
+
 enum Categories: String, CaseIterable {
     case burger = "버거"
     case chicken = "치킨"
@@ -51,19 +53,34 @@ var menus: [Categories: [Int : Menu]] = [.burger: menu_Burger, .chicken: menu_Ch
 
 
 
+
+
+
+
+
+
+
 class MenuPrint {
+    let costStyle : NumberFormatter
+    
+    init(costStyle : NumberFormatter) {
+        self.costStyle = costStyle
+    }
+    
+    
+    
+    
     func printMenuBoard(category: String, menu_Board: [Int : Menu]) {
         print("-------------------")
         print("\n\(category) 메뉴판\n")
         let menuBoardKeys = menu_Board.keys.sorted()
         for key in menuBoardKeys {
             if let value = menu_Board[key] {
-                print("제품번호: \(key)")
-                print("상품명: \(value.menu_Name)")
-                print("가격: \(value.menu_Cost)")
-                print("상품정보: \(value.menu_Info)\n")
+                let kfcCost = costStyle.string(from: NSNumber(value:  value.menu_Cost)) ?? ""
+                print("\(key) | \(value.menu_Name) | W: \(kfcCost) | \(value.menu_Info)\n")
             }
         }
+        print("")
         print("-------------------")
     }
 }
