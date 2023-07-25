@@ -7,7 +7,7 @@
 
 import Foundation
 
-print("Hello, World!")
+
 
 
 // 한국 시간 (요것이 main에 적어야만 작동이 되는 것 같습니다. payment 파일에 작성하니 상위 권한이 있는 파일에 적으라고 오류가 나네용)
@@ -22,7 +22,8 @@ let nowTime = koreaTime.string(from: now)
 
 
 
-
+var orderManager = OrderManager(myMoney: 10000)
+orderManager.mainPage()
 
     
 
