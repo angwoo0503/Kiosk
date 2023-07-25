@@ -27,6 +27,14 @@ func bankCheck() -> Bool {
     }
 }
 
+func moneyCheck(myMoney : Int, totalMoney : Int) -> Bool {
+    if myMoney >= totalMoney {
+        return true
+    } else {
+        return false
+    }
+}
+
 /*
 
 실행하고 싶을 때
