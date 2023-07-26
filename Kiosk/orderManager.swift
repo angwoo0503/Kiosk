@@ -4,9 +4,9 @@ import Foundation
 
 class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     
-    var myMoney : Int
-    var orderStatus : OrderStatus
-    var cart : Cart
+    var myMoney : Int // 사용자의 보유 금액 변수
+    var orderStatus : OrderStatus // 주문 상태 변수
+    var cart : Cart // 장바구니 객체 변수
     
     init(myMoney: Int) {
         self.myMoney = myMoney
@@ -14,9 +14,8 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         self.cart = Cart()
     }
     
-    // 메인 페이지
-    // 1. 메뉴 카테고리 선택
-    // 2. 종료
+    // 메인 페이지 표시 메서드
+    // 주문 상태에 따라 표시하는 메뉴 항목이 다름
     func mainPage() {
         if orderStatus == .empty || orderStatus == .completed {
             // 장바구니가 비어있는 경우
@@ -38,10 +37,8 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                 }
             }
         } else {
-            let autoMaticOutput = AutoMaticOutput(roopTime: 100)
-            autoMaticOutput.start()
-            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 장바구니\n0. 종료")
             // 장바구니에 상품이 있는 경우 (주문이 진행중인 경우)
+            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 장바구니\n0. 종료")
             if let choice = readIntFromConsole() {
                 switch choice {
                 case 1...Categories.allCases.count:
@@ -65,9 +62,7 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         }
     }
     
-    // 상세 메뉴 페이지
-    // 1. 메뉴 선택
-    // 2. 뒤로 가기
+    // 카테고리에 따른 상세 메뉴 페이지 표시 함수
     func detailMenuPage(categoryIndex: Int) {
         // categoryIndex에 해당하는 카테고리 메뉴들 출력
         let category = Categories.allCases[categoryIndex - 1]
@@ -81,7 +76,6 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         if let choice = readIntFromConsole() {
             switch choice {
             case 1...menus.count: // 메뉴 선택
-                // 선택한 메뉴로 장바구니 추가 등 필요한 로직 수행 코드 작성 필요!!!!
                 guard let menuName = menus[choice]?.menu_Name else { return }
                 guard let menuCost = menus[choice]?.menu_Cost else { return }
                 guard let menuInfo = menus[choice]?.menu_Info else { return }
@@ -98,16 +92,14 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     }
     
     
-    // 장바구니 추가 페이지
-    // 1. 확인
-    // 2. 취소
+    // 선택한 메뉴를 장바구니에 추가할지 선택하는 페이지 표시 메서드
     func orderCheckPage(menuName : String, menuCost : Int) {
         print()
         print("위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\n2. 취소\n")
         print("------------------------------------------")
         if let choice = readIntFromConsole() {
             switch choice {
-            case 1: // 1. 확인 장바구니 클래스, .inProgress 들어가야 함
+            case 1: // 1. 확인 장바구니에 추가
                 cart.addItemToCart(menuName: menuName, quantity: 1, unitCost: menuCost, orderStatus: .inProgress)
                 orderStatus = cart.orderStatus // 현재 cart의 orderStatus를 할당 (.inProgress)
                 sleep(1)
@@ -118,15 +110,17 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                 cartMessage.showAddToCartMessage()
                 sleep(3)
                 mainPage()
-            case 2: sleep(1)
-                mainPage() // 2. 취소
-            default: printErrorMessage()
+            case 2: sleep(1) // 2. 취소 메인 페이지로 돌아감
+                mainPage()
+            default: printErrorMessage() // 에러 메세지 출력 후 페이지 새로 불러오기
                 sleep(1)
                 orderCheckPage(menuName: menuName, menuCost: menuCost)
             }
         }
     }
     
+    
+    // 장바구니 페이지 표시 메서드
     func cartPage() {
         // 장바구니 아이템 출력
         cart.printCartItems()
@@ -182,9 +176,7 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     }
 
     
-    // 주문 페이지
-    // 1. 주문
-    // 2. 메뉴판
+    // 주문 페이지 표시 메서드
     func orderPage() {
         cart.printCartItems()
         print("주문하시겠습니까?\n1.확인\n2.취소")
@@ -216,11 +208,8 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     }
     
     
-    // 주문을 완료하는 함수
+    // 주문을 완료하는 메서드
     func successOrder() {
-        // 영수증 클래스(print)가 올 자리
-        //        var receipt = Receipt()
-        //        receipt.receiptPrint()
         myMoney -= cart.calculateTotalCost()
         orderStatus = .completed
         // cartMessage
@@ -234,7 +223,7 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     }
     
     
-    // 진행중인 주문 취소
+    // 진행중인 주문 취소 메서드
     func cancelOrder() {
         print("진행중인 주문을 취소했습니다.")
         cart.clearCart()
