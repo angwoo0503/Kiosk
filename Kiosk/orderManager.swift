@@ -192,7 +192,12 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                     sleep(1)
                     successOrder() // 주문 성공
                 } else {
-                    print("현재 잔액은 \(myMoney)원으로 \(cart.calculateTotalCost() - myMoney)원이 부족해서 주문할 수 없습니다.")
+                    // 현재 잔액과 부족한 금액을 천 단위로 표기
+                                    let costStyle = NumberFormatter()
+                                    costStyle.numberStyle = .decimal
+                                    let formattedMyMoney = costStyle.string(from: NSNumber(value: myMoney)) ?? ""
+                                    let formattedShortage = costStyle.string(from: NSNumber(value: cart.calculateTotalCost() - myMoney)) ?? ""
+                    print("현재 잔액은 \(formattedMyMoney)원으로 \(formattedShortage)원이 부족해서 주문할 수 없습니다.")
                     sleep(1)
                     mainPage()
                 }
