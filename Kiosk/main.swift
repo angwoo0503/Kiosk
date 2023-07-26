@@ -25,6 +25,7 @@ let nowTime = koreaTime.string(from: now)
 var orderManager = OrderManager(myMoney: 10000)
 orderManager.mainPage()
 
+
     
 
 

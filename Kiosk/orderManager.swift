@@ -1,6 +1,7 @@
 import Foundation
 
 
+
 class OrderManager : ReadIntFromConsole {
     
     var myMoney : Int
@@ -21,6 +22,8 @@ class OrderManager : ReadIntFromConsole {
     func mainPage() {
         if orderStatus == .empty {
             // 장바구니가 비어있는 경우
+            let autoMaticOutput = AutoMaticOutput(roopTime: 5)
+            autoMaticOutput.start()
             print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n0. 종료")
             if let choice = readIntFromConsole() {
                 switch choice {
@@ -33,6 +36,8 @@ class OrderManager : ReadIntFromConsole {
                 }
             }
         } else {
+            let autoMaticOutput = AutoMaticOutput(roopTime: 5)
+            autoMaticOutput.start()
             print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 주문 취소\n0. 종료")
             // 장바구니에 상품이 있는 경우 (주문이 진행중인 경우)
             if let choice = readIntFromConsole() {
@@ -96,12 +101,14 @@ class OrderManager : ReadIntFromConsole {
                     cart.addItemToCart(menuName: menuName, quantity: 1, menuCost: menuCost, orderStatus: orderStatus)
                 orderStatus = cart.orderStatus // 현재 cart의 orderStatus를 할당 (.inProgress)
                 cart.printCartItems()
+
                 // cartMessage
                 let cartMessage = CartMessage()
                                 cartMessage.showAddToCartMessage()
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                     self.mainPage()
                                 }
+
             case 2: mainPage() // 2. 취소
             default: print("잘못된 번호를 입력했어요. 다시 입력해주세요. \n")
                 print("------------------------------------------")
