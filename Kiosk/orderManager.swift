@@ -101,7 +101,14 @@ class OrderManager : ReadIntFromConsole {
                     cart.addItemToCart(menuName: menuName, quantity: 1, menuCost: menuCost, orderStatus: orderStatus)
                 orderStatus = cart.orderStatus // 현재 cart의 orderStatus를 할당 (.inProgress)
                 cart.printCartItems()
-                mainPage()
+
+                // cartMessage
+                let cartMessage = CartMessage()
+                                cartMessage.showAddToCartMessage()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                    self.mainPage()
+                                }
+
             case 2: mainPage() // 2. 취소
             default: print("잘못된 번호를 입력했어요. 다시 입력해주세요. \n")
                 print("------------------------------------------")
@@ -141,7 +148,11 @@ class OrderManager : ReadIntFromConsole {
 //        receipt.receiptPrint()
         myMoney -= totalMoney
         orderStatus = .completed
-        mainPage()
+        // cartMessage
+        print("결제가 완료되었습니다.")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.mainPage()
+                }
     }
     
     
