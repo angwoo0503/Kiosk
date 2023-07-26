@@ -1,49 +1,69 @@
+struct CartItem {
+    var menuName : String
+    var quantity : Int
+    var menuCost : Int
+    var unitCost: Int
+}
 
 class Cart {
-    var menuName : String
-    var cartItems : [String : (quantity : Int,  menuCost : Int)] = [:]
-    var orderStatus : OrderStatus
+    var cartItems: [CartItem] = []
+    var cartItemDictionary: [String: Int] = [:]
+    var orderStatus: OrderStatus
     
-    init(menuName: String, quantity: Int, menuCost: Int) {
-        self.menuName = menuName
+    init() {
         self.orderStatus = .empty
     }
     
-    func addItemToCart(menuName: String, quantity: Int, menuCost: Int, orderStatus: OrderStatus) {
+    func addItemToCart(menuName: String, quantity: Int, unitCost: Int, orderStatus: OrderStatus) {
         self.orderStatus = .inProgress
-        if let existingItem = cartItems[menuName] {
-            // 이미 물건이 있는 경우, 수량과 가격을 업데이트
-            let updatedQuantity = existingItem.quantity + quantity
-            let updatedCost = existingItem.menuCost + menuCost
-            cartItems[menuName] = (quantity: updatedQuantity, menuCost: updatedCost)
+        if let index = cartItemDictionary[menuName] {
+            let updatedQuantity = cartItems[index].quantity + quantity
+            let updatedCost = cartItems[index].menuCost + unitCost * quantity
+            cartItems[index] = CartItem(menuName: menuName, quantity: updatedQuantity, menuCost: updatedCost, unitCost: unitCost)
         } else {
-            // 물건이 없는 경우, 새로운 키-값 쌍을 추가
-            cartItems[menuName] = (quantity: quantity, menuCost: menuCost)
+            let newItem = CartItem(menuName: menuName, quantity: quantity, menuCost: unitCost * quantity, unitCost: unitCost)
+            cartItems.append(newItem)
+            cartItemDictionary[menuName] = cartItems.count - 1
         }
     }
     
-    func printCartItems () {
-        print("------------------------------------------\n")
-        for (menuName, (quantity, menuCost)) in cartItems {
-            print("\(menuName) - 수량 : \(quantity) 가격 : \(menuCost * quantity)\n")
+    func removeItemByNumber(number: Int, quantity: Int) {
+        if number >= 1 && number <= cartItems.count {
+            cartItems[number - 1].quantity -= quantity
+            cartItems[number - 1].menuCost -= cartItems[number - 1].unitCost * quantity
+            if cartItems[number - 1].quantity <= 0 {
+                let removedItem = cartItems.remove(at: number - 1)
+                cartItemDictionary.removeValue(forKey: removedItem.menuName)
+                for i in number - 1..<cartItems.count {
+                    cartItemDictionary[cartItems[i].menuName] = i
+                }
+            }
+        } else {
+            print("잘못된 번호입니다.")
         }
-        print("총 가격 : \(calculateTotalCost())\n")
+    }
+    
+    func printCartItems() {
+        print("------------------------------------------")
+        print("장바구니:")
+        for (index, item) in cartItems.enumerated() {
+            print("\(index + 1). \(item.menuName) - 수량 : \(item.quantity) 가격 : \(item.menuCost)")
+        }
+        print("------------------------------------------")
+        print("총 가격 : \(calculateTotalCost())")
         print("------------------------------------------")
     }
     
     func calculateTotalCost() -> Int {
-            var totalCost = 0
-            for (_, (quantity, menuCost)) in cartItems {
-                totalCost += quantity * menuCost
-            }
-            return totalCost
+        var totalCost = 0
+        for (_, item) in cartItems.enumerated() {
+            totalCost += item.menuCost
         }
+        return totalCost
+    }
     
-    func removeItem(menu: Menu) {
-            cartItems.removeValue(forKey: menu.menu_Name)
-        }
-        
     func clearCart() {
-            cartItems.removeAll()
+        cartItems.removeAll()
+        cartItemDictionary.removeAll()
     }
 }

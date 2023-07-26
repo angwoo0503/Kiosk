@@ -2,62 +2,69 @@ import Foundation
 
 
 
-class OrderManager : ReadIntFromConsole {
+class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     
     var myMoney : Int
     var orderStatus : OrderStatus
-    var totalMoney : Int
     var cart : Cart
     
     init(myMoney: Int) {
         self.myMoney = myMoney
         self.orderStatus = .empty
-        self.totalMoney = 0
-        self.cart = Cart(menuName: "", quantity: 0, menuCost: 0)
+        self.cart = Cart()
     }
     
     // 메인 페이지
     // 1. 메뉴 카테고리 선택
     // 2. 종료
     func mainPage() {
-        if orderStatus == .empty {
+        if orderStatus == .empty || orderStatus == .completed {
             // 장바구니가 비어있는 경우
-            let autoMaticOutput = AutoMaticOutput(roopTime: 5)
+            let autoMaticOutput = AutoMaticOutput(roopTime: 100)
             autoMaticOutput.start()
             print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n0. 종료")
             if let choice = readIntFromConsole() {
                 switch choice {
                 case 1...Categories.allCases.count:
                     // 선택한 카테고리 상세 메뉴 페이지로 이동
+                    sleep(1)
                     detailMenuPage(categoryIndex: choice)
                 case 0: print("프로그램을 종료합니다.")
+                    sleep(1)
                     exit(0) // 프로그램 종료
-                default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.")
+                default: printErrorMessage()
+                    sleep(1)
+                    mainPage()
                 }
             }
         } else {
-            let autoMaticOutput = AutoMaticOutput(roopTime: 5)
+            let autoMaticOutput = AutoMaticOutput(roopTime: 100)
             autoMaticOutput.start()
-            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 주문 취소\n0. 종료")
+            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 장바구니\n0. 종료")
             // 장바구니에 상품이 있는 경우 (주문이 진행중인 경우)
             if let choice = readIntFromConsole() {
                 switch choice {
                 case 1...Categories.allCases.count:
                     // 선택한 카테고리로 상세 메뉴 페이지로 이동
+                    sleep(1)
                     detailMenuPage(categoryIndex: choice)
                 case Categories.allCases.count+1:
+                    sleep(1)
                     orderPage() // 장바구니를 확인 후 주문
                 case Categories.allCases.count+2:
-                    cancelOrder() // 진행중인 주문을 취소
+                    sleep(1)
+                    cartPage() // 장바구니 페이지로 이동
                 case 0: print("프로그램을 종료합니다.")
+                    sleep(1)
                     exit(0) // 프로그램 종료
-                default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.")
+                default: printErrorMessage()
+                    sleep(1)
                     mainPage()
                 }
             }
         }
     }
-
+    
     // 상세 메뉴 페이지
     // 1. 메뉴 선택
     // 2. 뒤로 가기
@@ -81,8 +88,11 @@ class OrderManager : ReadIntFromConsole {
                 print("------------------------------------------\n")
                 print("\(menuName) | \(menuCost) | \(menuInfo)")
                 orderCheckPage(menuName: menuName, menuCost: menuCost)
-            case 0: mainPage() // 메인 페이지로 이동 (뒤로 가기)
-            default: print("잘못된 번호를 입력했어요. 다시 입력해주세요.\n")
+            case 0: sleep(1)
+                mainPage() // 메인 페이지로 이동 (뒤로 가기)
+            default: printErrorMessage()
+                sleep(1)
+                detailMenuPage(categoryIndex: categoryIndex)
             }
         }
     }
@@ -98,61 +108,129 @@ class OrderManager : ReadIntFromConsole {
         if let choice = readIntFromConsole() {
             switch choice {
             case 1: // 1. 확인 장바구니 클래스, .inProgress 들어가야 함
-                    cart.addItemToCart(menuName: menuName, quantity: 1, menuCost: menuCost, orderStatus: orderStatus)
+                cart.addItemToCart(menuName: menuName, quantity: 1, unitCost: menuCost, orderStatus: .inProgress)
                 orderStatus = cart.orderStatus // 현재 cart의 orderStatus를 할당 (.inProgress)
+                sleep(1)
                 cart.printCartItems()
-
+                
                 // cartMessage
                 let cartMessage = CartMessage()
-                                cartMessage.showAddToCartMessage()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                    self.mainPage()
-                                }
-
-            case 2: mainPage() // 2. 취소
-            default: print("잘못된 번호를 입력했어요. 다시 입력해주세요. \n")
-                print("------------------------------------------")
+                cartMessage.showAddToCartMessage()
+                sleep(3)
+                mainPage()
+            case 2: sleep(1)
+                mainPage() // 2. 취소
+            default: printErrorMessage()
+                sleep(1)
+                orderCheckPage(menuName: menuName, menuCost: menuCost)
             }
         }
     }
     
+    func cartPage() {
+        // 장바구니 아이템 출력
+        cart.printCartItems()
+        print("제외하려는 메뉴 번호를 입력하세요.")
+        print("0. 뒤로 가기")
+        print("------------------------------------------")
+        if let choice = readIntFromConsole() {
+            // 입력한 번호가 장바구니에 있는 아이템 수량 내에 있는지 확인
+            if choice >= 1 && choice <= cart.cartItems.count {
+                // 장바구니에 있는 아이템의 수가 1개일 때
+                if cart.cartItems[choice - 1].quantity == 1 {
+                    cart.removeItemByNumber(number: choice, quantity: 1)
+                    print("------------------------------------------")
+                    print("메뉴가 제외 되었습니다.")
+                } else {
+                    print("------------------------------------------")
+                    print("제외할 메뉴의 수량을 입력하세요.")
+                    print("------------------------------------------")
+                    if let quantity = readIntFromConsole() {
+                        if cart.cartItems[choice - 1].quantity >= quantity {
+                            cart.removeItemByNumber(number: choice, quantity: quantity)
+                            print("------------------------------------------")
+                            print("아이템이 제거되었습니다.")
+                        } else {
+                            print("제외할 메뉴의 수량이 현재 메뉴의 수량보다 많습니다.")
+                            sleep(1)
+                            cartPage()
+                        }
+                    } else {
+                        // 유효하지 않은 수량 입력시 에러 메시지 출력 후 재시도
+                        printErrorMessage()
+                        sleep(1)
+                        cartPage()
+                    }
+                }
+                sleep(1)
+                // 장바구니가 비었다면 주문 상태를 empty로 변경
+                if cart.cartItems.isEmpty {
+                    orderStatus = .empty
+                }
+                cartPage()
+            } else if choice == 0 {
+                // 메인 페이지로 돌아감
+                sleep(1)
+                mainPage()
+            } else {
+                // 유효하지 않은 번호 입력시 에러 메시지 출력 후 재시도
+                printErrorMessage()
+                sleep(1)
+                cartPage()
+            }
+        }
+    }
+
     
     // 주문 페이지
     // 1. 주문
     // 2. 메뉴판
     func orderPage() {
+        cart.printCartItems()
+        print("주문하시겠습니까?\n1.확인\n2.취소")
+        print("------------------------------------------")
         if let choice = readIntFromConsole() {
             switch choice {
             case 1: if bankCheck() {
-                if moneyCheck(myMoney: myMoney, totalMoney: totalMoney) {
+                if moneyCheck(myMoney: myMoney, totalMoney: cart.calculateTotalCost()) {
+                    sleep(1)
                     successOrder() // 주문 성공
                 } else {
-                    print("현재 잔액은 5.5W으로 1.4W이 부족해서 주문할 수 없습니다.")
+                    print("현재 잔액은 \(myMoney)원으로 \(cart.calculateTotalCost() - myMoney)원이 부족해서 주문할 수 없습니다.")
+                    sleep(1)
+                    mainPage()
                 }
             } else {
                 print("현재 시각은 오후 11시 10분입니다. 은행 점검 시간은 오후 11시 10분 ~ 오후 11시 20분이므로 결제할 수 없습니다.")
+                sleep(1)
+                mainPage()
             }// 조건(금액, 시간) 확인후 주문
-            case 2: mainPage() // 메뉴판 이동
+            case 2: sleep(1)
+                mainPage() // 메뉴판 이동
             default:
-                print("잘못된 번호를 입력했어요. 다시 입력해주세요.")
+                printErrorMessage()
+                sleep(1)
                 orderPage()
             }
         }
     }
     
     
-    // 주문을 진행하는 함수
+    // 주문을 완료하는 함수
     func successOrder() {
         // 영수증 클래스(print)가 올 자리
-//        var receipt = Receipt()
-//        receipt.receiptPrint()
-        myMoney -= totalMoney
+        //        var receipt = Receipt()
+        //        receipt.receiptPrint()
+        myMoney -= cart.calculateTotalCost()
         orderStatus = .completed
         // cartMessage
+        print("------------------------------------------")
         print("결제가 완료되었습니다.")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.mainPage()
-                }
+        let receipt = Receipt()
+        receipt.receiptPrint(cartItems: cart.cartItems, totalCost: cart.calculateTotalCost())
+        cart.clearCart()
+        sleep(3)
+        mainPage()
     }
     
     
@@ -161,21 +239,7 @@ class OrderManager : ReadIntFromConsole {
         print("진행중인 주문을 취소했습니다.")
         cart.clearCart()
         orderStatus = .empty
+        sleep(1)
         mainPage()
     }
-    
-    
-    // 영덕님이 구현한 기능
-    //    // 현재 결제 가능 시간인가?
-    //    func canOrderTime() -> Bool {
-    //        // 결제 가능 시간
-    //        let currentTime = Date()
-    //        let calendar = Calendar.current
-    //
-    //        guard let startTime = calendar.date(bySettingHour: 11, minute: 10, second: 0, of: currentTime) else {fatalError("결제 가능 시간을 불러오는 과정에서 오류가 났습니다.")}
-    //        guard let endTime = calendar.date(bySettingHour: 11, minute: 20, second: 0, of: currentTime) else {fatalError("결제 가능 시간을 불러오는 과정에서 오류가 났습니다.")}
-    //
-    //        return currentTime >= startTime && currentTime <= endTime
-    //    }
-    //
 }
