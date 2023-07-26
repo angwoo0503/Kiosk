@@ -16,7 +16,7 @@ class Receipt {
 //    }
     // Menu객체 내에서 담길 목록을 shoppingBasket에 추가하는 메서드
     
-    func receiptPrint(cartItems: [String: (quantity: Int, menuCost: Int)], totalCost: Int) {
+    func receiptPrint(cartItems: [CartItem], totalCost: Int) {
         
         print("KFC 스파르타점")
         
@@ -27,10 +27,10 @@ class Receipt {
         
         print("------------------------------------------")
         
-        for (menuName, (quantity, menuCost)) in cartItems {
-                    print("\(menuName) - 수량: \(quantity) 가격: \(menuCost * quantity)원")
-                }
-//        for item in shoppingBasket {
+        for (index, item) in cartItems.enumerated() {  // 각 메뉴와 그 메뉴의 번호, 수량, 가격을 출력
+            print("\(index + 1). \(item.menuName) - 수량 : \(item.quantity) 가격 : \(item.menuCost)원")
+        }
+        //        for item in shoppingBasket {
 //            print("\(item.menu_Name): \(item.menu_Cost)원")
 //            amount += item.menu_Cost
 //        }
@@ -38,6 +38,7 @@ class Receipt {
         
         print("------------------------------------------")
         print("총 가격: \(totalCost)원")
+        print("현재 잔액: \(orderManager.myMoney)원")
         print("------------------------------------------")
     }
 }

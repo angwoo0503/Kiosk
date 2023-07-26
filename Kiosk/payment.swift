@@ -21,9 +21,9 @@ let bankCheckEndTime : String = "23:20:00"
 func bankCheck() -> Bool {
      if bankCheckStartTime <= nowTime &&
             nowTime <= bankCheckEndTime {
-        return true
-    } else {
         return false
+    } else {
+        return true
     }
 }
 
