@@ -79,8 +79,12 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                 guard let menuName = menus[choice]?.menu_Name else { return }
                 guard let menuCost = menus[choice]?.menu_Cost else { return }
                 guard let menuInfo = menus[choice]?.menu_Info else { return }
+                // 가격 천단위 , 포맷팅
+                let costStyle = NumberFormatter()
+                            costStyle.numberStyle = .decimal
+                            let formattedCost = costStyle.string(from: NSNumber(value: menuCost)) ?? ""
                 print("------------------------------------------\n")
-                print("\(menuName) | \(menuCost) | \(menuInfo)")
+                print("\(menuName) | \(formattedCost) | \(menuInfo)")
                 orderCheckPage(menuName: menuName, menuCost: menuCost)
             case 0: sleep(1)
                 mainPage() // 메인 페이지로 이동 (뒤로 가기)

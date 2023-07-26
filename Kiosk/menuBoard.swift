@@ -51,7 +51,6 @@ var menu_Beverage = [
 var menus: [Categories: [Int : Menu]] = [.burger: menu_Burger, .chicken: menu_Chicken, .side: menu_Side, .beverage: menu_Beverage]
 
 
-
 class MenuPrint {
 
 
