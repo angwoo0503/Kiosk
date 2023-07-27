@@ -58,6 +58,7 @@ class Cart {
     func printCartItems() {
         print("------------------------------------------")
         print("장바구니:")
+        print("주문 하신 상품과 수량을 확인해주세요.\n")
         // 가격 천단위 , 포맷팅
         let costStyle = NumberFormatter()
             costStyle.numberStyle = .decimal
@@ -67,9 +68,9 @@ class Cart {
             }
         let totalCost = calculateTotalCost()
         let formattedTotalCost = costStyle.string(from: NSNumber(value: totalCost)) ?? ""
-        print("------------------------------------------")
+        print("")
         print("총 가격 : \(formattedTotalCost)")
-        print("------------------------------------------")
+        print("")
     }
     
     // 장바구니에 있는 모든 아이템들의 가격을 합하여 반환하는 메서드
