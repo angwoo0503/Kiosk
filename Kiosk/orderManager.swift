@@ -19,7 +19,9 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     func mainPage() {
         if orderStatus == .empty || orderStatus == .completed {
             // 장바구니가 비어있는 경우
-            let autoMaticOutput = AutoMaticOutput(roopTime: 100)
+            roopCount = 100
+            // 0으로 만든 roopCount를 100으로 만들어 재실행 하기 위해 roopCount = 100을 추가했습니다.
+            let autoMaticOutput = AutoMaticOutput(roopTime: roopTimeWant, waitingList: waitingListNow)
             autoMaticOutput.start()
             print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n0. 종료")
             if let choice = readIntFromConsole() {
@@ -227,7 +229,14 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         let receipt = Receipt()
         receipt.receiptPrint(cartItems: cart.cartItems, totalCost: cart.calculateTotalCost())
         cart.clearCart()
-        sleep(3)
+        /*
+        대기 중인 주문을 roopCount의 수만큼만 반복되도록 했습니다. (처음 100으로 설정)
+        0으로 만들고 5초에 한번 재실행 되어서 rooptime을 0으로 만들고
+        5초를 기다려야 해서 sleep을 여기만 6으로 변경했습니다.
+         */
+        roopCount = 0
+        waitingListNow += 1
+        sleep(6)
         mainPage()
     }
     
