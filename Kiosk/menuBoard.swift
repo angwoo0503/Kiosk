@@ -153,6 +153,7 @@ class AutoMaticOutput {
 }
 
 
+
 /*
  
 let autoMaticOutput = AutoMaticOutput(roopTime: 5)
