@@ -22,11 +22,12 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     func mainPage() {
         if orderStatus == .empty || orderStatus == .completed {
             // 장바구니가 비어있는 경우
-            if autoMaticOutputFlag == true { // autoMaticOutput이 mainPage로 돌아올 때 마다 새로운 객체를 계속 생성하지 않게 하기 위함.
-                let autoMaticOutput = AutoMaticOutput(roopTime: 5)
-                autoMaticOutput.start()
-                autoMaticOutputFlag = false
-            }
+
+            roopCount = 100
+            // 0으로 만든 roopCount를 100으로 만들어 재실행 하기 위해 roopCount = 100을 추가했습니다.
+            let autoMaticOutput = AutoMaticOutput(roopTime: roopTimeWant, waitingList: waitingListNow)
+            autoMaticOutput.start()
+
             print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n0. 종료")
             var choice : Int? = nil
             while choice == nil {
@@ -89,25 +90,23 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         menuPrint.printMenuBoard(category: category.rawValue, menu_Board: menus)
         print("0. 뒤로 가기")
         print("------------------------------------------")
-        var choice : Int? = nil
-        while choice == nil {
-            if let choice = readIntFromConsole() {
-                switch choice {
-                case 1...menus.count: // 메뉴 선택
-                    guard let menuName = menus[choice]?.menu_Name else { return }
-                    guard let menuCost = menus[choice]?.menu_Cost else { return }
-                    guard let menuInfo = menus[choice]?.menu_Info else { return }
-                    print("------------------------------------------\n")
-                    print("\(menuName) | \(menuCost) | \(menuInfo)")
-                    orderCheckPage(menuName: menuName, menuCost: menuCost)
-                case 0: sleep(1)
-                    mainPage() // 메인 페이지로 이동 (뒤로 가기)
-                default: printErrorMessage()
-                    sleep(1)
-                    detailMenuPage(categoryIndex: categoryIndex)
-                }
-            } else {
-                printErrorMessage()
+
+        if let choice = readIntFromConsole() {
+            switch choice {
+            case 1...menus.count: // 메뉴 선택
+                guard let menuName = menus[choice]?.menu_Name else { return }
+                guard let menuCost = menus[choice]?.menu_Cost else { return }
+                guard let menuInfo = menus[choice]?.menu_Info else { return }
+                // 가격 천단위 , 포맷팅
+                let costStyle = NumberFormatter()
+                            costStyle.numberStyle = .decimal
+                            let formattedCost = costStyle.string(from: NSNumber(value: menuCost)) ?? ""
+                print("------------------------------------------\n")
+                print("\(menuName) | \(formattedCost) | \(menuInfo)")
+                orderCheckPage(menuName: menuName, menuCost: menuCost)
+            case 0: sleep(1)
+                mainPage() // 메인 페이지로 이동 (뒤로 가기)
+            default: printErrorMessage()
                 sleep(1)
             }
         }
@@ -215,7 +214,12 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                     sleep(1)
                     successOrder() // 주문 성공
                 } else {
-                    print("현재 잔액은 \(myMoney)원으로 \(cart.calculateTotalCost() - myMoney)원이 부족해서 주문할 수 없습니다.")
+                    // 현재 잔액과 부족한 금액을 천 단위로 표기
+                                    let costStyle = NumberFormatter()
+                                    costStyle.numberStyle = .decimal
+                                    let formattedMyMoney = costStyle.string(from: NSNumber(value: myMoney)) ?? ""
+                                    let formattedShortage = costStyle.string(from: NSNumber(value: cart.calculateTotalCost() - myMoney)) ?? ""
+                    print("현재 잔액은 \(formattedMyMoney)원으로 \(formattedShortage)원이 부족해서 주문할 수 없습니다.")
                     sleep(1)
                     mainPage()
                 }
@@ -245,7 +249,14 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         let receipt = Receipt()
         receipt.receiptPrint(cartItems: cart.cartItems, totalCost: cart.calculateTotalCost())
         cart.clearCart()
-        sleep(3)
+        /*
+        대기 중인 주문을 roopCount의 수만큼만 반복되도록 했습니다. (처음 100으로 설정)
+        0으로 만들고 5초에 한번 재실행 되어서 rooptime을 0으로 만들고
+        5초를 기다려야 해서 sleep을 여기만 6으로 변경했습니다.
+         */
+        roopCount = 0
+        waitingListNow += 1
+        sleep(6)
         mainPage()
     }
     
