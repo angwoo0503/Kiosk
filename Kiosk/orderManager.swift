@@ -79,8 +79,12 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                 guard let menuName = menus[choice]?.menu_Name else { return }
                 guard let menuCost = menus[choice]?.menu_Cost else { return }
                 guard let menuInfo = menus[choice]?.menu_Info else { return }
+                // 가격 천단위 , 포맷팅
+                let costStyle = NumberFormatter()
+                            costStyle.numberStyle = .decimal
+                            let formattedCost = costStyle.string(from: NSNumber(value: menuCost)) ?? ""
                 print("------------------------------------------\n")
-                print("\(menuName) | \(menuCost) | \(menuInfo)")
+                print("\(menuName) | \(formattedCost) | \(menuInfo)")
                 orderCheckPage(menuName: menuName, menuCost: menuCost)
             case 0: sleep(1)
                 mainPage() // 메인 페이지로 이동 (뒤로 가기)
@@ -188,7 +192,12 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                     sleep(1)
                     successOrder() // 주문 성공
                 } else {
-                    print("현재 잔액은 \(myMoney)원으로 \(cart.calculateTotalCost() - myMoney)원이 부족해서 주문할 수 없습니다.")
+                    // 현재 잔액과 부족한 금액을 천 단위로 표기
+                                    let costStyle = NumberFormatter()
+                                    costStyle.numberStyle = .decimal
+                                    let formattedMyMoney = costStyle.string(from: NSNumber(value: myMoney)) ?? ""
+                                    let formattedShortage = costStyle.string(from: NSNumber(value: cart.calculateTotalCost() - myMoney)) ?? ""
+                    print("현재 잔액은 \(formattedMyMoney)원으로 \(formattedShortage)원이 부족해서 주문할 수 없습니다.")
                     sleep(1)
                     mainPage()
                 }

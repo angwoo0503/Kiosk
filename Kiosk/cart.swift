@@ -1,4 +1,6 @@
 // 장바구니에 들어갈 아이템을 정의하는 구조체
+
+import Foundation
 struct CartItem {
     var menuName : String  // 메뉴 이름
     var quantity : Int  // 수량
@@ -56,11 +58,17 @@ class Cart {
     func printCartItems() {
         print("------------------------------------------")
         print("장바구니:")
+        // 가격 천단위 , 포맷팅
+        let costStyle = NumberFormatter()
+            costStyle.numberStyle = .decimal
         for (index, item) in cartItems.enumerated() {
-            print("\(index + 1). \(item.menuName) - 수량 : \(item.quantity) 가격 : \(item.menuCost)")
-        }
+                let formattedCost = costStyle.string(from: NSNumber(value: item.menuCost)) ?? ""
+                print("\(index + 1). \(item.menuName) - 수량 : \(item.quantity) 가격 : \(formattedCost)")
+            }
+        let totalCost = calculateTotalCost()
+        let formattedTotalCost = costStyle.string(from: NSNumber(value: totalCost)) ?? ""
         print("------------------------------------------")
-        print("총 가격 : \(calculateTotalCost())")
+        print("총 가격 : \(formattedTotalCost)")
         print("------------------------------------------")
     }
     
