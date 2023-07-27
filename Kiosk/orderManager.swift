@@ -28,7 +28,8 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
             let autoMaticOutput = AutoMaticOutput(roopTime: roopTimeWant, waitingList: waitingListNow)
             autoMaticOutput.start()
 
-            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n0. 종료")
+            categoriesPagePrint()
+            
             let choice : Int? = nil
             while choice == nil {
                 if let choice = readIntFromConsole() {
@@ -50,7 +51,8 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
             }
         } else {
             // 장바구니에 상품이 있는 경우 (주문이 진행중인 경우)
-            print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 장바구니\n0. 종료")
+            categoriesPagePrint()
+            orderPrint()
             let choice : Int? = nil
             while choice == nil {
                 if let choice = readIntFromConsole() {
@@ -175,7 +177,7 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                         if cart.cartItems[choice - 1].quantity >= quantity {
                             cart.removeItemByNumber(number: choice, quantity: quantity)
                             print("------------------------------------------")
-                            print("아이템이 제거되었습니다.")
+                            print("메뉴가 제외되었습니다.")
                         } else {
                             print("제외할 메뉴의 수량이 현재 메뉴의 수량보다 많습니다.")
                             sleep(1)

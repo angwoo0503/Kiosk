@@ -7,12 +7,6 @@
 
 import Foundation
 
-enum Categories: String, CaseIterable {
-    case burger = "버거"
-    case chicken = "치킨"
-    case side = "사이드"
-    case beverage = "음료"
-}
 
 class Menupage {
     let menuList =  "[ KFC 스파르타점 메뉴 ]"
@@ -43,7 +37,7 @@ var categoriesInfo = [
     [categoriesList[2]: categoriesInforList[2]],
     [categoriesList[3]: categoriesInforList[3]]
 ]
-print(categoriesInfo)
+
 
 func categoriesPagePrint() {
     print("------------------------------------------\n")
@@ -56,8 +50,14 @@ func categoriesPagePrint() {
             print("\(categoryNumber). \(category) | \(info)")
         }
     }
+}
+
+func orderPrint() {
+    print("")
+    print("[ 주문 및 장바구니 ]")
+    print("5. 주문 | 장바구니에 담긴 상품 주문")
+    print("6. 장바구니 | 장바구니 확인 및 메뉴 취소")
     print("0. 종료 | 프로그램 종료")
 }
 
-categoriesPagePrint()
 
