@@ -7,11 +7,14 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     var myMoney : Int // 사용자의 보유 금액 변수
     var orderStatus : OrderStatus // 주문 상태 변수
     var cart : Cart // 장바구니 객체 변수
+    var autoMaticOutputFlag : Bool // 주문 대기수 자동 출력 플래그
+    
     
     init(myMoney: Int) {
         self.myMoney = myMoney
         self.orderStatus = .empty
         self.cart = Cart()
+        self.autoMaticOutputFlag = true
     }
     
     // 메인 페이지 표시 메서드
@@ -19,44 +22,57 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     func mainPage() {
         if orderStatus == .empty || orderStatus == .completed {
             // 장바구니가 비어있는 경우
-            let autoMaticOutput = AutoMaticOutput(roopTime: 100)
-            autoMaticOutput.start()
+            if autoMaticOutputFlag == true { // autoMaticOutput이 mainPage로 돌아올 때 마다 새로운 객체를 계속 생성하지 않게 하기 위함.
+                let autoMaticOutput = AutoMaticOutput(roopTime: 5)
+                autoMaticOutput.start()
+                autoMaticOutputFlag = false
+            }
             print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n0. 종료")
-            if let choice = readIntFromConsole() {
-                switch choice {
-                case 1...Categories.allCases.count:
-                    // 선택한 카테고리 상세 메뉴 페이지로 이동
+            var choice : Int? = nil
+            while choice == nil {
+                if let choice = readIntFromConsole() {
+                    switch choice {
+                    case 1...Categories.allCases.count:
+                        // 선택한 카테고리 상세 메뉴 페이지로 이동
+                        sleep(1)
+                        detailMenuPage(categoryIndex: choice)
+                    case 0: print("프로그램을 종료합니다.")
+                        sleep(1)
+                        exit(0) // 프로그램 종료
+                    default: printErrorMessage()
+                        sleep(1)
+                    }
+                } else {
+                    printErrorMessage()
                     sleep(1)
-                    detailMenuPage(categoryIndex: choice)
-                case 0: print("프로그램을 종료합니다.")
-                    sleep(1)
-                    exit(0) // 프로그램 종료
-                default: printErrorMessage()
-                    sleep(1)
-                    mainPage()
                 }
             }
         } else {
             // 장바구니에 상품이 있는 경우 (주문이 진행중인 경우)
             print("1. 버거\n2. 치킨\n3. 사이드\n4. 음료\n5. 주문\n6. 장바구니\n0. 종료")
-            if let choice = readIntFromConsole() {
-                switch choice {
-                case 1...Categories.allCases.count:
-                    // 선택한 카테고리로 상세 메뉴 페이지로 이동
+            var choice : Int? = nil
+            while choice == nil {
+                if let choice = readIntFromConsole() {
+                    switch choice {
+                    case 1...Categories.allCases.count:
+                        // 선택한 카테고리로 상세 메뉴 페이지로 이동
+                        sleep(1)
+                        detailMenuPage(categoryIndex: choice)
+                    case Categories.allCases.count+1:
+                        sleep(1)
+                        orderPage() // 장바구니를 확인 후 주문
+                    case Categories.allCases.count+2:
+                        sleep(1)
+                        cartPage() // 장바구니 페이지로 이동
+                    case 0: print("프로그램을 종료합니다.")
+                        sleep(1)
+                        exit(0) // 프로그램 종료
+                    default: printErrorMessage()
+                        sleep(1)
+                    }
+                } else {
+                    printErrorMessage()
                     sleep(1)
-                    detailMenuPage(categoryIndex: choice)
-                case Categories.allCases.count+1:
-                    sleep(1)
-                    orderPage() // 장바구니를 확인 후 주문
-                case Categories.allCases.count+2:
-                    sleep(1)
-                    cartPage() // 장바구니 페이지로 이동
-                case 0: print("프로그램을 종료합니다.")
-                    sleep(1)
-                    exit(0) // 프로그램 종료
-                default: printErrorMessage()
-                    sleep(1)
-                    mainPage()
                 }
             }
         }
@@ -73,20 +89,26 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         menuPrint.printMenuBoard(category: category.rawValue, menu_Board: menus)
         print("0. 뒤로 가기")
         print("------------------------------------------")
-        if let choice = readIntFromConsole() {
-            switch choice {
-            case 1...menus.count: // 메뉴 선택
-                guard let menuName = menus[choice]?.menu_Name else { return }
-                guard let menuCost = menus[choice]?.menu_Cost else { return }
-                guard let menuInfo = menus[choice]?.menu_Info else { return }
-                print("------------------------------------------\n")
-                print("\(menuName) | \(menuCost) | \(menuInfo)")
-                orderCheckPage(menuName: menuName, menuCost: menuCost)
-            case 0: sleep(1)
-                mainPage() // 메인 페이지로 이동 (뒤로 가기)
-            default: printErrorMessage()
+        var choice : Int? = nil
+        while choice == nil {
+            if let choice = readIntFromConsole() {
+                switch choice {
+                case 1...menus.count: // 메뉴 선택
+                    guard let menuName = menus[choice]?.menu_Name else { return }
+                    guard let menuCost = menus[choice]?.menu_Cost else { return }
+                    guard let menuInfo = menus[choice]?.menu_Info else { return }
+                    print("------------------------------------------\n")
+                    print("\(menuName) | \(menuCost) | \(menuInfo)")
+                    orderCheckPage(menuName: menuName, menuCost: menuCost)
+                case 0: sleep(1)
+                    mainPage() // 메인 페이지로 이동 (뒤로 가기)
+                default: printErrorMessage()
+                    sleep(1)
+                    detailMenuPage(categoryIndex: categoryIndex)
+                }
+            } else {
+                printErrorMessage()
                 sleep(1)
-                detailMenuPage(categoryIndex: categoryIndex)
             }
         }
     }
@@ -97,24 +119,29 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         print()
         print("위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\n2. 취소\n")
         print("------------------------------------------")
-        if let choice = readIntFromConsole() {
-            switch choice {
-            case 1: // 1. 확인 장바구니에 추가
-                cart.addItemToCart(menuName: menuName, quantity: 1, unitCost: menuCost, orderStatus: .inProgress)
-                orderStatus = cart.orderStatus // 현재 cart의 orderStatus를 할당 (.inProgress)
+        var choice : Int? = nil
+        while choice == nil {
+            if let choice = readIntFromConsole() {
+                switch choice {
+                case 1: // 1. 확인 장바구니에 추가
+                    cart.addItemToCart(menuName: menuName, quantity: 1, unitCost: menuCost, orderStatus: .inProgress)
+                    orderStatus = cart.orderStatus // 현재 cart의 orderStatus를 할당 (.inProgress)
+                    sleep(1)
+                    cart.printCartItems()
+                    
+                    // cartMessage
+                    let cartMessage = CartMessage()
+                    cartMessage.showAddToCartMessage()
+                    sleep(3)
+                    mainPage()
+                case 2: sleep(1) // 2. 취소 메인 페이지로 돌아감
+                    mainPage()
+                default: printErrorMessage() // 에러 메세지 출력 후 페이지 새로 불러오기
+                    sleep(1)
+                }
+            } else {
+                printErrorMessage()
                 sleep(1)
-                cart.printCartItems()
-                
-                // cartMessage
-                let cartMessage = CartMessage()
-                cartMessage.showAddToCartMessage()
-                sleep(3)
-                mainPage()
-            case 2: sleep(1) // 2. 취소 메인 페이지로 돌아감
-                mainPage()
-            default: printErrorMessage() // 에러 메세지 출력 후 페이지 새로 불러오기
-                sleep(1)
-                orderCheckPage(menuName: menuName, menuCost: menuCost)
             }
         }
     }
