@@ -90,23 +90,28 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         menuPrint.printMenuBoard(category: category.rawValue, menu_Board: menus)
         print("0. 뒤로 가기")
         print("------------------------------------------")
-
-        if let choice = readIntFromConsole() {
-            switch choice {
-            case 1...menus.count: // 메뉴 선택
-                guard let menuName = menus[choice]?.menu_Name else { return }
-                guard let menuCost = menus[choice]?.menu_Cost else { return }
-                guard let menuInfo = menus[choice]?.menu_Info else { return }
-                // 가격 천단위 , 포맷팅
-                let costStyle = NumberFormatter()
-                            costStyle.numberStyle = .decimal
-                            let formattedCost = costStyle.string(from: NSNumber(value: menuCost)) ?? ""
-                print("------------------------------------------\n")
-                print("\(menuName) | \(formattedCost) | \(menuInfo)")
-                orderCheckPage(menuName: menuName, menuCost: menuCost)
-            case 0: sleep(1)
-                mainPage() // 메인 페이지로 이동 (뒤로 가기)
-            default: printErrorMessage()
+        let choice : Int? = nil
+        while choice == nil {
+            if let choice = readIntFromConsole() {
+                switch choice {
+                case 1...menus.count: // 메뉴 선택
+                    guard let menuName = menus[choice]?.menu_Name else { return }
+                    guard let menuCost = menus[choice]?.menu_Cost else { return }
+                    guard let menuInfo = menus[choice]?.menu_Info else { return }
+                    // 가격 천단위 , 포맷팅
+                    let costStyle = NumberFormatter()
+                    costStyle.numberStyle = .decimal
+                    let formattedCost = costStyle.string(from: NSNumber(value: menuCost)) ?? ""
+                    print("------------------------------------------\n")
+                    print("\(menuName) | \(formattedCost) | \(menuInfo)")
+                    orderCheckPage(menuName: menuName, menuCost: menuCost)
+                case 0: sleep(1)
+                    mainPage() // 메인 페이지로 이동 (뒤로 가기)
+                default: printErrorMessage()
+                    sleep(1)
+                }
+            } else {
+                printErrorMessage()
                 sleep(1)
             }
         }
@@ -208,33 +213,38 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         cart.printCartItems()
         print("주문하시겠습니까?\n1.확인\n2.취소")
         print("------------------------------------------")
-        if let choice = readIntFromConsole() {
-            switch choice {
-            case 1: if bankCheck() {
-                if moneyCheck(myMoney: myMoney, totalMoney: cart.calculateTotalCost()) {
-                    sleep(1)
-                    successOrder() // 주문 성공
+        let choice : Int? = nil
+        while choice == nil {
+            if let choice = readIntFromConsole() {
+                switch choice {
+                case 1: if bankCheck() {
+                    if moneyCheck(myMoney: myMoney, totalMoney: cart.calculateTotalCost()) {
+                        sleep(1)
+                        successOrder() // 주문 성공
+                    } else {
+                        // 현재 잔액과 부족한 금액을 천 단위로 표기
+                        let costStyle = NumberFormatter()
+                        costStyle.numberStyle = .decimal
+                        let formattedMyMoney = costStyle.string(from: NSNumber(value: myMoney)) ?? ""
+                        let formattedShortage = costStyle.string(from: NSNumber(value: cart.calculateTotalCost() - myMoney)) ?? ""
+                        print("현재 잔액은 \(formattedMyMoney)원으로 \(formattedShortage)원이 부족해서 주문할 수 없습니다.")
+                        sleep(1)
+                        mainPage()
+                    }
                 } else {
-                    // 현재 잔액과 부족한 금액을 천 단위로 표기
-                                    let costStyle = NumberFormatter()
-                                    costStyle.numberStyle = .decimal
-                                    let formattedMyMoney = costStyle.string(from: NSNumber(value: myMoney)) ?? ""
-                                    let formattedShortage = costStyle.string(from: NSNumber(value: cart.calculateTotalCost() - myMoney)) ?? ""
-                    print("현재 잔액은 \(formattedMyMoney)원으로 \(formattedShortage)원이 부족해서 주문할 수 없습니다.")
+                    print("현재 시각은 오후 11시 10분입니다. 은행 점검 시간은 오후 11시 10분 ~ 오후 11시 20분이므로 결제할 수 없습니다.")
                     sleep(1)
                     mainPage()
+                }// 조건(금액, 시간) 확인후 주문
+                case 2: sleep(1)
+                    mainPage() // 메뉴판 이동
+                default:
+                    printErrorMessage()
+                    sleep(1)
                 }
             } else {
-                print("현재 시각은 오후 11시 10분입니다. 은행 점검 시간은 오후 11시 10분 ~ 오후 11시 20분이므로 결제할 수 없습니다.")
-                sleep(1)
-                mainPage()
-            }// 조건(금액, 시간) 확인후 주문
-            case 2: sleep(1)
-                mainPage() // 메뉴판 이동
-            default:
                 printErrorMessage()
                 sleep(1)
-                orderPage()
             }
         }
     }

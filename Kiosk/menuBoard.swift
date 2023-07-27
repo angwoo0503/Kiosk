@@ -119,7 +119,6 @@ menuPrint.printMenuBoard(category: "음료", menu_Board: menu_Beverage)
 
 
 
-
 /*
  
 let autoMaticOutput = AutoMaticOutput(roopTime: 5)

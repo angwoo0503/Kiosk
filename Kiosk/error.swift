@@ -1,24 +1,15 @@
 
 
 enum OrderError: Error {
-    case mainPageError
-    case detailMenuPageError
-    case orderCheckPageError
-    case cartPageError
-    case orderPageError
-
-    var localizedDescription: String {
+    case inputIntError
+    case inputStringError
+    
+    var errorDescription: String {
         switch self {
-        case .mainPageError:
-            return "메인 페이지 에러 : 유효하지 않은 입력값입니다."
-        case .detailMenuPageError:
-            return "상세 메뉴 페이지 에러 : 유효하지 않은 입력값입니다."
-        case .orderCheckPageError:
-            return "장바구니 추가 페이지 에러 : 유효하지 않은 입력값입니다."
-        case .cartPageError:
-            return "장바구니 페이지 에러 : 유효하지 않은 입력값입니다."
-        case .orderPageError:
-            return "주문 페이지 에러 : 유효하지 않은 입력값입니다."
+        case .inputIntError :
+            return "올바른 번호를 입력해주세요."
+        case . inputStringError :
+            return "잘못된 입력입니다. 숫자를 입력해주세요."
         }
     }
 }
