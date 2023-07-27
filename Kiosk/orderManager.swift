@@ -121,7 +121,7 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     // 선택한 메뉴를 장바구니에 추가할지 선택하는 페이지 표시 메서드
     func orderCheckPage(menuName : String, menuCost : Int) {
         print()
-        print("위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\n2. 취소\n")
+        print("위 메뉴를 장바구니에 추가하시겠습니까?\n1. 추가\n2. 취소\n")
         print("------------------------------------------")
         let choice : Int? = nil
         while choice == nil {
@@ -155,7 +155,7 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
     func cartPage() {
         // 장바구니 아이템 출력
         cart.printCartItems()
-        print("제외하려는 메뉴 번호를 입력하세요.")
+        print("제외하려는 메뉴 번호를 입력하세요.\n")
         print("0. 뒤로 가기")
         print("------------------------------------------")
         if let choice = readIntFromConsole() {
@@ -165,7 +165,8 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                 if cart.cartItems[choice - 1].quantity == 1 {
                     cart.removeItemByNumber(number: choice, quantity: 1)
                     print("------------------------------------------")
-                    print("메뉴가 제외 되었습니다.")
+                    print("메뉴가 제외 되었습니다.\n")
+                    print("상품을 추가하시려면 0번을 입력해주세요")
                 } else {
                     print("------------------------------------------")
                     print("제외할 메뉴의 수량을 입력하세요.")
@@ -256,6 +257,7 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
         // cartMessage
         print("------------------------------------------")
         print("결제가 완료되었습니다.")
+        print("------------------------------------------\n")
         let receipt = Receipt()
         receipt.receiptPrint(cartItems: cart.cartItems, totalCost: cart.calculateTotalCost())
         cart.clearCart()

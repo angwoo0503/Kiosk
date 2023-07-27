@@ -56,7 +56,8 @@ class MenuPrint {
 
     func printMenuBoard(category: String, menu_Board: [Int : Menu]) {
         print("------------------------------------------")
-        print("\n\(category) 메뉴판\n")
+        print("\nKFC \(category)\n")
+        print("원하시는 메뉴를 선택해주세요.\n")
         let menuBoardKeys = menu_Board.keys.sorted()
         for key in menuBoardKeys {
             if let value = menu_Board[key] {
@@ -113,9 +114,6 @@ menuPrint.printMenuBoard(category: "사이드", menu_Board: menu_Side)
 menuPrint.printMenuBoard(category: "음료", menu_Board: menu_Beverage)
  
  */
-
-
-
 
 
 

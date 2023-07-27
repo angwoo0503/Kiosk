@@ -21,7 +21,11 @@ class AutoMaticOutput {
     let queue = DispatchQueue(label: "com.example.myQueue")
     queue.async {
       self.timer = Timer(timeInterval: TimeInterval(self.roopTime), repeats: true) { [self] _ in
-        print("현재 대기 중인 주문은 \(Int(waitingList))건 입니다.")
+        print("""
+                                                            -------------------------------------------
+                                                            현재 대기 중인 주문은 \(Int(waitingList))건 입니다.
+                                                            -------------------------------------------
+        """)
         self.count += 1
         if self.count >= roopCount {
             self.end()
