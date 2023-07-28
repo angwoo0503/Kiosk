@@ -168,7 +168,6 @@ class OrderManager : ReadIntFromConsole, InvaildInputPrint {
                     cart.removeItemByNumber(number: choice, quantity: 1)
                     print("------------------------------------------")
                     print("메뉴가 제외 되었습니다.\n")
-                    print("상품을 추가하시려면 0번을 입력해주세요")
                 } else {
                     print("------------------------------------------")
                     print("제외할 메뉴의 수량을 입력하세요.")
